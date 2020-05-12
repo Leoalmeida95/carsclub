@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Third
 from flask_restful import Api, Resource
+
 
 # Extendendo de Resource
 class Index(Resource):

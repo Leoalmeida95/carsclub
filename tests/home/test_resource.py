@@ -3,6 +3,7 @@
 # Python
 import json
 
+
 def test_home_response_hello(client):
     """
     **Given** Luiza está acessando a API,

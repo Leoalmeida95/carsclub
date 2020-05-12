@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Python
-import json
-
 # O `client` é a fixture que criamos dentro do arquivo conftest.py
 # ela é passada por parâmetro na função e pode ser usada dentro do escopo dela
 
