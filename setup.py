@@ -7,8 +7,8 @@ __version__ = '0.1.0'
 __description__ = 'Api Python Flask'
 __long_description__ = 'This is an API to Flask Api Users'
 
-__author__ = 'Leonardo Almeida'
-__author_email__ = 'leo.almeida.silva@hotmail.com'
+__author__ = 'Lucas Simon'
+__author_email__ = 'lucassrod@gmail.com'
 
 testing_extras = [
     'pytest',
@@ -24,8 +24,8 @@ setup(
     license='MIT',
     description=__description__,
     long_description=__long_description__,
-    url='https://github.com/Leoalmeida95/flask-api-users',
-    keywords='API, MongoDB, Flask',
+    url='https://github.com/lucassimon/flask-api-users.git',
+    keywords='API, MongoDB',
     include_package_data=True,
     zip_safe=False,
     classifiers=[

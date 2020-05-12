@@ -1,18 +1,26 @@
 # Third
-from mongoengine import BooleanField, StringField
+
+from mongoengine import (
+    BooleanField,
+    StringField,
+)
 
 # Apps
+
 from apps.users.models import User
 
 
 class TestUser:
 
     def setup_method(self):
+        self.address = {
+            'zip_code': '31000-000', 'address': 'teste',
+            'number': '12a', 'info': 'teste', 'neighborhood': 'teste',
+            'city': 'teste', 'state': 'teste', 'country': 'teste',
+        }
         self.data = {
-            'email': 'teste1@teste.com', 
-            'password': 'teste123',
-            'active': True, 
-            'full_name': 'Teste',
+            'email': 'teste1@teste.com', 'password': 'teste123',
+            'active': True, 'full_name': 'Teste',
             'cpf_cnpj': '11111111111'
         }
 

@@ -15,6 +15,8 @@ if isfile(_ENV_FILE):
 
 # Cria uma fixture que será utilizada no escopo sessão
 # ou seja a cada execução do comando pytest
+
+
 @pytest.fixture(scope='session')
 def client():
     from apps import create_app
@@ -36,6 +38,7 @@ def client():
 
     # remove o contexto ao terminar os testes
     ctx.pop()
+
 
 @pytest.fixture(scope='function')
 def mongo(request, client):

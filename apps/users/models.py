@@ -15,6 +15,24 @@ from mongoengine import (
 from apps.db import db
 
 
+class Address(EmbeddedDocument):
+    """
+    Default implementation for address fields
+    """
+    meta = {
+        'ordering': ['zip_code']
+    }
+    zip_code = StringField(default='')
+    address = StringField(default='')
+    number = StringField(default='')
+    complement = StringField(default='')
+    neighborhood = StringField(default='')
+    city = StringField(default='')
+    city_id = StringField(default='')
+    state = StringField(default='')
+    country = StringField(default='BRA')
+
+
 class Roles(EmbeddedDocument):
     """
     Roles permissions
@@ -43,28 +61,10 @@ class UserMixin(db.Document):
     def is_admin(self):
         return self.roles.admin
 
-# Abaixo fica o código para a classe Adress
-
-class Address(EmbeddedDocument):
-    """
-    Default implementation for address fields
-    """
-    meta = {
-        'ordering': ['zip_code']
-    }
-    zip_code = StringField(default='')
-    address = StringField(default='')
-    number = StringField(default='')
-    complement = StringField(default='')
-    neighborhood = StringField(default='')
-    city = StringField(default='')
-    city_id = StringField(default='')
-    state = StringField(default='')
-    country = StringField(default='BRA')
 
 class User(UserMixin):
     '''
-    Users
+    Users are Buyers
     '''
     meta = {'collection': 'users'}
 

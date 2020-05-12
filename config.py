@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Python
-# Python
+
 # Python
 from os import getenv
 
@@ -11,14 +10,17 @@ class Config:
     DEBUG = eval(getenv('DEBUG').title())
     MONGODB_HOST = getenv('MONGODB_URI')
 
+
 class DevelopmentConfig(Config):
     FLASK_ENV = 'development'
     DEBUG = True
+
 
 class TestingConfig(Config):
     FLASK_ENV = 'testing'
     TESTING = True
     MONGODB_HOST = getenv('MONGODB_URI_TEST')
+
 
 config = {
     'development': DevelopmentConfig,
