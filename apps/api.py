@@ -26,6 +26,6 @@ def configure_api(app):
 
     api.add_resource(Index, '/')
     api.add_resource(SignUp, '/users')
-    api.add_resource(AdminUserPageList, '/admin/users/<int:page_id>')
+    api.add_resource(AdminUserPageList, '/admin/users/page/<int:page_id>')
     api.add_resource(AdminUserResource, '/admin/users/<string:user_id>')
     api.init_app(app)
