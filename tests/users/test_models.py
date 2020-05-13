@@ -2,7 +2,7 @@
 
 from mongoengine import (
     BooleanField,
-    StringField,
+    StringField
 )
 
 # Apps
@@ -13,10 +13,9 @@ from apps.users.models import User
 class TestUser:
 
     def setup_method(self):
-        self.address = {
-            'zip_code': '31000-000', 'address': 'teste',
-            'number': '12a', 'info': 'teste', 'neighborhood': 'teste',
-            'city': 'teste', 'state': 'teste', 'country': 'teste',
+        self.car = {
+            'color': 'red', 'value': 10000,
+            'mileage': 0, 'number_ports': 2
         }
         self.data = {
             'email': 'teste1@teste.com', 'password': 'teste123',
@@ -77,7 +76,7 @@ class TestUser:
         Verifico se todos os campos estão de fato no meu modelo
         """
         fields = [
-            'active', 'address', 'cpf_cnpj', 'created', 'email',
+            'active', 'cars', 'cpf_cnpj', 'created', 'email',
             'full_name', 'id', 'password', 'roles'
         ]
 

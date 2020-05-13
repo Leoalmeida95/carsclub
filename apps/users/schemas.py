@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from marshmallow import Schema
-from marshmallow.fields import Email, Str, Boolean, Nested
+from marshmallow.fields import Email, Str, Boolean, Nested, Int
 from apps.messages import MSG_FIELD_REQUIRED
 
 
@@ -25,20 +25,20 @@ class UserSchema(Schema):
     active = Boolean()
 
 
-class AddressSchema(Schema):
-    zip_code = Str()
-    address = Str()
-    number = Str()
-    complement = Str()
-    neighborhood = Str()
-    city = Str()
-    city_id = Str()
-    state = Str()
-    country = Str()
+class FuelSchema(Schema):
+    Nome = Str()
+
+
+class CarSchema(Schema):
+    color = Str()
+    value = Int()
+    mileage = Int()
+    number_ports = Int()
+    fuel = Nested(FuelSchema)
 
 
 class UserUpdateSchema(Schema):
     full_name = Str()
     email = Email()
     cpf_cnpj = Str()
-    address = Nested(AddressSchema)
+    cars = Nested(CarSchema)

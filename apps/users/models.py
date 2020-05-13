@@ -4,6 +4,7 @@ from datetime import datetime
 # Third
 from mongoengine import (
     BooleanField,
+    IntField,
     DateTimeField,
     EmailField,
     EmbeddedDocument,
@@ -14,23 +15,22 @@ from mongoengine import (
 # Apps
 from apps.db import db
 
+TYPES = ('Disel', 'Etanol', 'Gasolina', 'GNV')
 
-class Address(EmbeddedDocument):
+
+class Fuel(EmbeddedDocument):
+    Nome = StringField(max_length=8, choices=TYPES)
+
+
+class Car(EmbeddedDocument):
     """
-    Default implementation for address fields
+    Default implementation for cars fields
     """
-    meta = {
-        'ordering': ['zip_code']
-    }
-    zip_code = StringField(default='')
-    address = StringField(default='')
-    number = StringField(default='')
-    complement = StringField(default='')
-    neighborhood = StringField(default='')
-    city = StringField(default='')
-    city_id = StringField(default='')
-    state = StringField(default='')
-    country = StringField(default='BRA')
+    color = StringField(default='')
+    value = IntField(default=0)
+    mileage = IntField(default='')
+    number_ports = IntField(default=2)
+    fuel = EmbeddedDocumentField(Fuel, default=Fuel)
 
 
 class Roles(EmbeddedDocument):
@@ -70,4 +70,4 @@ class User(UserMixin):
 
     full_name = StringField(required=True)
     cpf_cnpj = StringField(default='')
-    address = EmbeddedDocumentField(Address, default=Address)
+    cars = EmbeddedDocumentField(Car, default=Car)
