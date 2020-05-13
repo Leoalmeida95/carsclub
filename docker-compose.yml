@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
     api1:
         container_name: api1
@@ -8,15 +8,13 @@ services:
         environment:
           SECRET_KEY: "hard-secret-key"
           MONGODB_URI: "mongodb://dbserver:27017/carsclubdb"
+        tty: true
         depends_on:
         - dbserver
         links:
         - dbserver
         ports:
         - '5001:5000'
-        networks:
-        - frontend
-        - backend
 
     api2:
         container_name: api2
@@ -26,56 +24,29 @@ services:
         environment:
             SECRET_KEY: "hard-secret-key"
             MONGODB_URI: "mongodb://dbserver:27017/carsclubdb"
+        tty: true
         depends_on:
         - dbserver
         links:
         - dbserver
         ports:
         - '5002:5000'
-        networks:
-        - frontend
-        - backend
 
     dbserver:
         container_name: dbserver
         image: 'mongo:latest'
         restart: unless-stopped
+        tty: true
         ports:
         - '27017:27017'
         volumes:
         - ./data/db:/data/db
-        networks:
-        - backend
 
-    webserver:
-        build:
-            context: nginx
-            dockerfile: Dockerfile
-        image: nginx:latest
-        container_name: webserver
-        restart: unless-stopped
-        environment:
-            APP_ENV: "prod"
-            APP_NAME: "webserver"
-            APP_DEBUG: "true"
-            SERVICE_NAME: "webserver"
-        ports:
-            - "90:80"
-            - "443:443"
-        volumes:
-            - nginxdata:/var/log/nginx
-        depends_on:
+    loadbalancer:
+        build: ./nginx
+        tty: true
+        links:
             - api1
             - api2
-        networks:
-            - frontend
-
-networks:
-    frontend:
-        driver: bridge
-    backend:
-        driver: bridge
-
-volumes:
-    nginxdata:
-        driver: local
+        ports:
+            - '8080:8080'

@@ -4,11 +4,11 @@
 from setuptools import find_packages, setup
 
 __version__ = '0.1.0'
-__description__ = 'Api Python Flask'
-__long_description__ = 'This is an API to Flask Api Users'
+__description__ = 'Cars Club'
+__long_description__ = 'This is an API to Cars Club'
 
-__author__ = 'Lucas Simon'
-__author_email__ = 'lucassrod@gmail.com'
+__author__ = 'Leonardo Almeida da Silva'
+__author_email__ = 'leo.almeida.silva@hotmail.com'
 
 testing_extras = [
     'pytest',
@@ -24,7 +24,7 @@ setup(
     license='MIT',
     description=__description__,
     long_description=__long_description__,
-    url='https://github.com/lucassimon/flask-api-users.git',
+    url='https://github.com/Leoalmeida95/carsclub.git',
     keywords='API, MongoDB',
     include_package_data=True,
     zip_safe=False,
