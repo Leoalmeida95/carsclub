@@ -1,8 +1,5 @@
 # -*- coding:utf-8 -*-
 
-# Python
-
-# Flask
 from flask import request
 
 # Third
@@ -57,9 +54,9 @@ class SignUp(Resource):
         # Crio um hash da minha senha
         hashed = hashpw(password.encode('utf-8'), gensalt(12))
 
-        # Salvo meu modelo de usuário com a senha criptografada e email em lower case
-        # Qualquer exceção ao salvar o modelo retorno uma resposta em JSON
-        # ao invés de levantar uma exception no servidor
+        # Salvo meu modelo de usuário com a senha criptografada e email em
+        # lower case Qualquer exceção ao salvar o modelo retorno uma resposta
+        # em JSON ao invés de levantar uma exception no servidor
         try:
             data['password'] = hashed
             data['email'] = data['email'].lower()

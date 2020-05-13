@@ -6,7 +6,9 @@ from .messages import MSG_INVALID_DATA, MSG_DOES_NOT_EXIST, MSG_EXCEPTION
 from .messages import MSG_ALREADY_EXISTS
 
 
-def resp_data_invalid(resource :str, errors: dict, msg: str = MSG_INVALID_DATA):
+def resp_data_invalid(
+    resource: str, errors: dict, msg: str = MSG_INVALID_DATA
+):
     '''
     Responses 422 Unprocessable Entity
     '''
@@ -25,7 +27,9 @@ def resp_data_invalid(resource :str, errors: dict, msg: str = MSG_INVALID_DATA):
     return resp
 
 
-def resp_exception(resource :str, description :str = '', msg :str = MSG_EXCEPTION):
+def resp_exception(
+    resource: str, description: str = '', msg: str = MSG_EXCEPTION
+):
     '''
     Responses 500
     '''
@@ -44,7 +48,9 @@ def resp_exception(resource :str, description :str = '', msg :str = MSG_EXCEPTIO
     return resp
 
 
-def resp_does_not_exist(resource :str, description :str):
+def resp_does_not_exist(
+    resource: str, description: str
+):
     '''
     Responses 404 Not Found
     '''
@@ -62,7 +68,9 @@ def resp_does_not_exist(resource :str, description :str):
     return resp
 
 
-def resp_already_exists(resource :str, description :str):
+def resp_already_exists(
+    resource: str, description: str
+):
     '''
     Responses 400
     '''
@@ -80,7 +88,9 @@ def resp_already_exists(resource :str, description :str):
     return resp
 
 
-def resp_ok(resource :str, message :str, data=None, **extras):
+def resp_ok(
+    resource: str, message: str, data=None, **extras
+):
     '''
     Responses 200
     '''
