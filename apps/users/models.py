@@ -28,7 +28,7 @@ class Car(EmbeddedDocument):
     """
     color = StringField(default='')
     value = IntField(default=0)
-    mileage = IntField(default='')
+    mileage = IntField(default=0)
     number_ports = IntField(default=2)
     fuel = EmbeddedDocumentField(Fuel, default=Fuel)
 

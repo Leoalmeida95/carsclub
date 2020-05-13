@@ -22,7 +22,8 @@ from apps.messages import (
                             MSG_NO_DATA,
                             MSG_ALREADY_EXISTS,
                             MSG_INVALID_DATA,
-                            MSG_RESOURCE_UPDATED
+                            MSG_RESOURCE_UPDATED,
+                            MSG_RESOURCE_DELETED
                         )
 
 from .models import User
@@ -138,3 +139,31 @@ class AdminUserResource(Resource):
         return resp_ok(
             'Users', MSG_RESOURCE_UPDATED.format('Usuário'),  data=result.data
         )
+
+    def delete(self, user_id):
+            # Busco o usuário na coleção users pelo seu id
+            user = get_user_by_id(user_id)
+
+            # se não for uma instancia do modelo User retorno uma resposta
+            # da requisição http do flask
+            if not isinstance(user, User):
+                return user
+
+            try:
+                user.active = False
+                user.save()
+
+            except NotUniqueError:
+                return resp_already_exists('Users', 'usuário')
+
+            except ValidationError as e:
+                return resp_exception(
+                                        'Users',
+                                        msg=MSG_INVALID_DATA,
+                                        description=e.__str__()
+                                    )
+
+            except Exception as e:
+                return resp_exception('Users', description=e.__str__())
+
+            return resp_ok('Users', MSG_RESOURCE_DELETED.format('Usuário'))
