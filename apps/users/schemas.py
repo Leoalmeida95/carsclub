@@ -31,6 +31,8 @@ class FuelSchema(Schema):
 
 class CarSchema(Schema):
     color = Str()
+    brand = Str()
+    model = Str()
     value = Int()
     mileage = Int()
     number_ports = Int()

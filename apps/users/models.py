@@ -27,6 +27,8 @@ class Car(EmbeddedDocument):
     Default implementation for cars fields
     """
     color = StringField(default='')
+    brand = StringField(default='')
+    model = StringField(default='')
     value = IntField(default=0)
     mileage = IntField(default=0)
     number_ports = IntField(default=2)

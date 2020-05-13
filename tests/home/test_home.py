@@ -9,7 +9,7 @@ import json
 
 def test_index_response_200(client):
     # Realiza uma requisição HTTP do tipo get para o endpoint /
-    response = client.get('/')
+    response = client.get('/api')
 
     # Verificamos a assertividade do código de resposta da requisição
     # http. Ela deve ser exatamente igual 200 retornando um True para
@@ -25,7 +25,7 @@ def test_home_response_hello(client):
     **And** seu conteúdo deve ser `world by apps`
     """
     # Realiza uma requisição HTTP do tipo get para o endpoint /
-    response = client.get('/')
+    response = client.get('/api')
 
     # Utilizamos a função loads do modulo json para retornar um dict
     # para a váriavel data.
@@ -35,4 +35,4 @@ def test_home_response_hello(client):
     data = json.loads(response.data.decode('utf-8'))
 
     # Fazemos o teste de asserção pela chave 'hello'
-    assert data['hello'] == 'world by apps'
+    assert data['site'] == 'Cars Club'

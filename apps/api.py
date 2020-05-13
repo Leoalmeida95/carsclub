@@ -2,31 +2,33 @@
 
 # Third
 # Importamos as classes API e Resource
+from flask import redirect
 from flask_restful import Api, Resource
 from apps.users.resources import SignUp, Activate
 from apps.users.resources_admin import AdminUserPageList, AdminUserResource
 
 
-# Criamos uma classe que extende de Resource
-class Index(Resource):
-
-    # Definimos a operação get do protocolo http
+class Inital(Resource):
     def get(self):
 
-        # retornamos um simples dicionário que será automáticamente
-        # retornado em json pelo flask
-        return {'hello': 'world by apps'}
+        return redirect("/api", code=302)
 
 
-# Instânciamos a API do FlaskRestful
+class Index(Resource):
+    def get(self):
+
+        return {'site': 'Cars Club'}
+
+
 api = Api()
 
 
 def configure_api(app):
 
-    api.add_resource(Index, '/')
-    api.add_resource(SignUp, '/users')
-    api.add_resource(Activate, '/users/activate/<string:user_id>')
-    api.add_resource(AdminUserPageList, '/admin/users/page/<int:page_id>')
-    api.add_resource(AdminUserResource, '/admin/users/<string:user_id>')
+    api.add_resource(Inital, '/')
+    api.add_resource(Index, '/api')
+    api.add_resource(SignUp, '/api/users')
+    api.add_resource(Activate, '/api/users/activate/<string:user_id>')
+    api.add_resource(AdminUserPageList, '/api/admin/users/page/<int:page_id>')
+    api.add_resource(AdminUserResource, '/api/admin/users/<string:user_id>')
     api.init_app(app)
