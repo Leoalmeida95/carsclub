@@ -42,3 +42,4 @@ class UserUpdateSchema(Schema):
     email = Email()
     cpf_cnpj = Str()
     cars = Nested(CarSchema)
+    active = Boolean()

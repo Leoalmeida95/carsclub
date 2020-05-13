@@ -3,7 +3,7 @@
 # Third
 # Importamos as classes API e Resource
 from flask_restful import Api, Resource
-from apps.users.resources import SignUp
+from apps.users.resources import SignUp, Activate
 from apps.users.resources_admin import AdminUserPageList, AdminUserResource
 
 
@@ -26,6 +26,7 @@ def configure_api(app):
 
     api.add_resource(Index, '/')
     api.add_resource(SignUp, '/users')
+    api.add_resource(Activate, '/users/activate/<string:user_id>')
     api.add_resource(AdminUserPageList, '/admin/users/page/<int:page_id>')
     api.add_resource(AdminUserResource, '/admin/users/<string:user_id>')
     api.init_app(app)

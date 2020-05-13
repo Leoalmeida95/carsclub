@@ -14,13 +14,18 @@ from apps.responses import (
     resp_data_invalid,
     resp_ok
 )
-from apps.messages import MSG_NO_DATA, MSG_PASSWORD_WRONG, MSG_INVALID_DATA
-from apps.messages import MSG_RESOURCE_CREATED
+from apps.messages import (
+                            MSG_NO_DATA,
+                            MSG_PASSWORD_WRONG,
+                            MSG_INVALID_DATA,
+                            MSG_RESOURCE_ACTIVE,
+                            MSG_RESOURCE_CREATED
+                        )
 
 # Local
 from .models import User
 from .schemas import UserRegistrationSchema, UserSchema
-from .utils import check_password_in_signup
+from .utils import check_password_in_signup, get_user_by_id
 
 
 class SignUp(Resource):
@@ -81,3 +86,30 @@ class SignUp(Resource):
         return resp_ok(
             'Users', MSG_RESOURCE_CREATED.format('Usuário'),  data=result.data,
         )
+
+
+class Activate(Resource):
+    def patch(self, user_id):
+
+        user = get_user_by_id(user_id)
+
+        if not isinstance(user, User):
+            return user
+
+        try:
+            user.active = True
+            user.save()
+
+        except NotUniqueError:
+            return resp_already_exists('Users', 'usuário')
+
+        except ValidationError as e:
+            return resp_exception(
+                                    'Users',
+                                    msg=MSG_INVALID_DATA,
+                                    description=e.__str__())
+
+        except Exception as e:
+            return resp_exception('Users', description=e.__str__())
+
+        return resp_ok('Users', MSG_RESOURCE_ACTIVE.format('Usuário'))
