@@ -1,7 +1,7 @@
 version: '3'
 services:
-    api:
-        container_name: api
+    api1:
+        container_name: api1
         build:
             context: .
             dockerfile: Dockerfile  
@@ -13,7 +13,25 @@ services:
         links:
         - dbserver
         ports:
-        - '5000:5000'
+        - '5001:5000'
+        networks:
+        - frontend
+        - backend
+
+    api2:
+        container_name: api2
+        build:
+            context: .
+            dockerfile: Dockerfile  
+        environment:
+            SECRET_KEY: "hard-secret-key"
+            MONGODB_URI: "mongodb://dbserver:27017/carsclubdb"
+        depends_on:
+        - dbserver
+        links:
+        - dbserver
+        ports:
+        - '5002:5000'
         networks:
         - frontend
         - backend
@@ -47,7 +65,8 @@ services:
         volumes:
             - nginxdata:/var/log/nginx
         depends_on:
-            - api
+            - api1
+            - api2
         networks:
             - frontend
 
