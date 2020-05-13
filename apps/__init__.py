@@ -9,7 +9,7 @@ from .db import db
 
 
 def create_app(config_name):
-    app = Flask('api-users')
+    app = Flask('carsclub')
 
     app.config.from_object(config[config_name])
 
