@@ -1,8 +1,7 @@
 version: '3'
 services:
-    server:
-        network_mode: bridge
-        container_name: server
+    api:
+        container_name: api
         build:
             context: .
             dockerfile: Dockerfile  
@@ -15,9 +14,11 @@ services:
         - dbserver
         ports:
         - '5000:5000'
+        networks:
+        - frontend
+        - backend
 
     dbserver:
-        network_mode: bridge
         container_name: dbserver
         image: 'mongo:latest'
         restart: unless-stopped
@@ -25,3 +26,37 @@ services:
         - '27017:27017'
         volumes:
         - ./data/db:/data/db
+        networks:
+        - backend
+
+    webserver:
+        build:
+            context: nginx
+            dockerfile: Dockerfile
+        image: nginx:latest
+        container_name: webserver
+        restart: unless-stopped
+        environment:
+            APP_ENV: "prod"
+            APP_NAME: "webserver"
+            APP_DEBUG: "true"
+            SERVICE_NAME: "webserver"
+        ports:
+            - "90:80"
+            - "443:443"
+        volumes:
+            - nginxdata:/var/log/nginx
+        depends_on:
+            - api
+        networks:
+            - frontend
+
+networks:
+    frontend:
+        driver: bridge
+    backend:
+        driver: bridge
+
+volumes:
+    nginxdata:
+        driver: local
