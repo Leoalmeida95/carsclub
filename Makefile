@@ -47,9 +47,9 @@ help:
 	@echo ""
 
 clean:
-	find . -name '*.pyc' -exec rm --force {} +
-	find . -name '*.pyo' -exec rm --force {} +
-	find . | grep -E "__pycache__|.pyc|.DS_Store$$" | xargs rm -rf
+	find . -path ./data -prune -o -name '*.pyc' -exec rm --force {} +
+	find . -path ./data -prune -o -name '*.pyo' -exec rm --force {} +
+	find . -path ./data -prune | grep -E "__pycache__|.pyc|.DS_Store$$" | xargs rm -rf
 
 clean-build:
 	rm --force --recursive build/
