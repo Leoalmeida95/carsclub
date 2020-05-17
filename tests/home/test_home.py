@@ -45,5 +45,5 @@ def test_verify_if_api_instance_existes(client):
 
 
 def test_verify_if_api_has_configure_atribute(client):
-
-    assert getattr(api, 'configure_api')
+    atr = getattr(api, 'configure_api')
+    assert hasattr(atr, '__call__')
