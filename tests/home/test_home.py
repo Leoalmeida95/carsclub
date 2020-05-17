@@ -39,3 +39,7 @@ def test_home_response_json_content_type(client):
 
 def test_verify_if_api_instance_existes(client):
     assert hasattr(api, 'api')
+
+
+def test_verify_if_api_has_configure_atribute(client):
+    assert getattr(api, 'configure_api')
