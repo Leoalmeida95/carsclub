@@ -3,6 +3,7 @@
 # Python
 import json
 from apps import api
+from flask_restful import Api
 
 
 def test_initial_response_302(client):
@@ -38,8 +39,11 @@ def test_home_response_json_content_type(client):
 
 
 def test_verify_if_api_instance_existes(client):
-    assert hasattr(api, 'api')
+    result = getattr(api, 'api')
+
+    assert isinstance(result, Api)
 
 
 def test_verify_if_api_has_configure_atribute(client):
+
     assert getattr(api, 'configure_api')
