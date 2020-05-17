@@ -1,6 +1,10 @@
 build/
 __pycache__/
 *.pytest_cache/
+.cache/
+data/
+htmlcov/
+env/
 local_settings.py
 *.py[cod]
 *.swp
@@ -8,10 +12,7 @@ local_settings.py
 .DS_Store
 .env
 .venv
-env/
 *.eggs
 *.egg-info
 .vscode
 .idea
-.cache/
-data
