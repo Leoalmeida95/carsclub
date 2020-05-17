@@ -41,9 +41,10 @@ def test_home_response_json_content_type(client):
 def test_verify_if_api_instance_existes(client):
     result = getattr(api, 'api')
 
-    assert isinstance(result, Api)
+    assert isinstance(result, Api), 'deve ser Api do flask_restful'
 
 
 def test_verify_if_api_has_configure_atribute(client):
     atr = getattr(api, 'configure_api')
-    assert hasattr(atr, '__call__')
+
+    assert hasattr(atr, '__call__'), 'o atributo deve ser invocável'
