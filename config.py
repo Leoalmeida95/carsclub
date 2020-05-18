@@ -9,6 +9,9 @@ class Config:
     PORT = int(getenv('PORT', 5000))
     DEBUG = getenv('DEBUG') or False
     MONGODB_HOST = getenv('MONGODB_URI')
+    ENABLE_AMQP = getenv('ENABLE_AMQP') or False
+    AMQP_URI = getenv('AMQP_URI') or ''
+    SIGNUP_QUEUE = getenv('SIGNUP_QUEUE') or ''
 
 
 class ProductionConfig(Config):
@@ -26,6 +29,7 @@ class TestingConfig(Config):
     FLASK_ENV = 'testing'
     TESTING = True
     MONGODB_HOST = getenv('MONGODB_URI_TEST')
+    ENABLE_AMQP = False
 
 
 config = {

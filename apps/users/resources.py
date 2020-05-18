@@ -1,11 +1,13 @@
 # -*- coding:utf-8 -*-
 
-from flask import request
+from flask import request, current_app
 
 # Third
 from flask_restful import Resource
 from bcrypt import gensalt, hashpw
 from mongoengine.errors import NotUniqueError, ValidationError
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 # Apps
 from apps.responses import (
@@ -21,6 +23,7 @@ from apps.messages import (
                             MSG_RESOURCE_ACTIVE,
                             MSG_RESOURCE_CREATED
                         )
+from apps.services import signup
 
 # Local
 from .models import User
@@ -78,9 +81,21 @@ class SignUp(Resource):
         except Exception as e:
             return resp_exception('Users', description=e)
 
+
         # Realizo um dump dos dados de acordo com o modelo salvo
         schema = UserSchema()
-        result = schema.dump(model)
+        result = schema.dump(model)        
+
+        if current_app.config.get('ENABLE_AMQP'):
+            try:
+                exp = datetime.utcnow() + relativedelta(days=2)
+                payload = {'id': '{}'.format(model.id), 'exp':exp}
+                producer = signup.ProducerSignUp(current_app.config.get('SIGNUP_QUEUE'))
+
+                producer.publish(result.data)
+
+            except Exception as e:
+                raise
 
         # Retorno 200 o meu endpoint
         return resp_ok(
@@ -113,3 +128,9 @@ class Activate(Resource):
             return resp_exception('Users', description=e.__str__())
 
         return resp_ok('Users', MSG_RESOURCE_ACTIVE.format('Usuário'))
+
+
+class  ConfirmEmail(Resource):
+
+    def get(self, id, *args, **kwargs):
+        pass
