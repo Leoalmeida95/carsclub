@@ -2,7 +2,7 @@ const amqp = require('amqplib')
 const nunjucks = require('nunjucks')
 const sgMail = require('@sendgrid/mail')
 
-/require('dotenv').load()
+require('dotenv').load()
 const config = require('./config')
 const { amqpUri, queue, sendgrid } = config
 const { Register } = require('./models')
@@ -10,7 +10,7 @@ const assertQueueOptions = { durable: true }
 const consumeQueueOptions = { noAck: false }
 
 nunjucks.configure('.', { autoescape: true })
-sgMail.setApiKey("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")
+sgMail.setApiKey(sendgrid)
 
 const generatedHtml = (body, name, context) => {
   return new Promise( (resolve, reject) => {
@@ -37,7 +37,7 @@ const doWork = async (msg) => {
   console.log(" [x] Received");
   const data = JSON.parse(body)
 
-  console.info(data.context)
+  // console.info(data.context)
 
   const { html, plain } = await generatedHtml(data.body, data.to, data.context)
 
@@ -47,7 +47,7 @@ const doWork = async (msg) => {
     body: plain, html: html, status: 'gen-html'
   })
 
-  const emailMsg = com{
+  const emailMsg = {
     to: email.to, from: email.from, subject: email.subject, text: email.body,
     html: email.html, categories: 'register',
     headers: { 'X-Send-By': 'FireRabbit', 'X-Collection': 'register'},
@@ -61,8 +61,8 @@ const doWork = async (msg) => {
     email.status = 'prepare'
     email.save()
   } catch (error) {
-    console.log(error)
-    throw error
+    // console.log(error)
+    next(error);
   }
 
 }
@@ -75,13 +75,13 @@ const assertAndConsumeQueue = (channel) => {
     channel.reject(msg, true)
   })
 
-  return channel.assertQueue("signup", assertQueueOptions)
+  return channel.assertQueue(queue, assertQueueOptions)
     .then(() => channel.prefetch(1))
-    .then(() => channel.consume("signup", ackMsg, consumeQueueOptions));
+    .then(() => channel.consume(queue, ackMsg, consumeQueueOptions));
 }
 
 const getQueueMessages = (
-  () => amqp.connect(sendgrid).then(
+  () => amqp.connect(amqpUri).then(
     connection => connection.createChannel()
   ).then(
     channel => assertAndConsumeQueue(channel)
