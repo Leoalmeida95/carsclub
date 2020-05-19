@@ -4,6 +4,7 @@ from flask import jsonify
 
 from .messages import MSG_INVALID_DATA, MSG_DOES_NOT_EXIST, MSG_EXCEPTION
 from .messages import MSG_ALREADY_EXISTS
+from .utils.enums import EStatus_Code
 
 
 def resp_data_invalid(
@@ -22,7 +23,7 @@ def resp_data_invalid(
         'errors': errors,
     })
 
-    resp.status_code = 422
+    resp.status_code = EStatus_Code.DATA_INVALID.value
 
     return resp
 
@@ -43,7 +44,7 @@ def resp_exception(
         'description': description
     })
 
-    resp.status_code = 500
+    resp.status_code = EStatus_Code.EXCEPTION.value
 
     return resp
 
@@ -63,7 +64,7 @@ def resp_does_not_exist(
         'message': MSG_DOES_NOT_EXIST.format(description),
     })
 
-    resp.status_code = 404
+    resp.status_code = EStatus_Code.NOT_FOUND.value
 
     return resp
 
@@ -83,7 +84,7 @@ def resp_already_exists(
         'message': MSG_ALREADY_EXISTS.format(description),
     })
 
-    resp.status_code = 400
+    resp.status_code = EStatus_Code.BAD_REQUEST.value
 
     return resp
 
@@ -95,7 +96,10 @@ def resp_ok(
     Responses 200
     '''
 
-    response = {'status': 200, 'message': message, 'resource': resource}
+    response = {'status': EStatus_Code.OK.value,
+                'message': message,
+                'resource': resource
+                }
 
     if data:
         response['data'] = data
@@ -104,6 +108,6 @@ def resp_ok(
 
     resp = jsonify(response)
 
-    resp.status_code = 200
+    resp.status_code = EStatus_Code.OK.value
 
     return resp
