@@ -2,9 +2,9 @@ const amqp = require('amqplib')
 const nunjucks = require('nunjucks')
 const sgMail = require('@sendgrid/mail')
 
-// require('dotenv').load()
-// const config = require('./config')
-// const { amqpUri, queue, sendgrid } = config
+/require('dotenv').load()
+const config = require('./config')
+const { amqpUri, queue, sendgrid } = config
 const { Register } = require('./models')
 const assertQueueOptions = { durable: true }
 const consumeQueueOptions = { noAck: false }
@@ -47,7 +47,7 @@ const doWork = async (msg) => {
     body: plain, html: html, status: 'gen-html'
   })
 
-  const emailMsg = {
+  const emailMsg = com{
     to: email.to, from: email.from, subject: email.subject, text: email.body,
     html: email.html, categories: 'register',
     headers: { 'X-Send-By': 'FireRabbit', 'X-Collection': 'register'},
@@ -81,7 +81,7 @@ const assertAndConsumeQueue = (channel) => {
 }
 
 const getQueueMessages = (
-  () => amqp.connect("amqp://nmqevbij:1hPWvLuJHij7ldYpDhd371eSuzHLYUoZ@wasp.rmq.cloudamqp.com/nmqevbij").then(
+  () => amqp.connect(sendgrid).then(
     connection => connection.createChannel()
   ).then(
     channel => assertAndConsumeQueue(channel)
