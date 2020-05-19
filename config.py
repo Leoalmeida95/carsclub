@@ -9,9 +9,9 @@ class Config:
     PORT = int(getenv('PORT', 5000))
     DEBUG = getenv('DEBUG') or False
     MONGODB_HOST = getenv('MONGODB_URI')
-    ENABLE_AMQP = getenv('ENABLE_AMQP') or False
     AMQP_URI = getenv('AMQP_URI') or ''
-    SIGNUP_QUEUE = getenv('SIGNUP_QUEUE') or ''
+    SIGNUP_QUEUE = getenv('SIGNUP_QUEUE') or 'api-users-signup'
+    ENABLE_AMQP = getenv('ENABLE_AMQP') or False
 
 
 class ProductionConfig(Config):

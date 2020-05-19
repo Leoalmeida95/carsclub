@@ -5,6 +5,7 @@ __pycache__/
 data/
 htmlcov/
 env/
+worker/node_modules
 local_settings.py
 *.py[cod]
 *.swp

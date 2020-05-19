@@ -15,31 +15,33 @@ class ProducerSignUp:
     def publish(self, user):
         from apps.api import api
         from apps.users.resources import ConfirmEmail
-        url = api.url_for(ConfirmEmail, user_id= user.get('id'), external=True)
+        url = api.url_for(ConfirmEmail, user_id=user.get('id'), external=True)
 
         context = {"data": user, "url": url}
 
-        message = self.message(name="Cars-Club", to=user.get('email'), **context)
+        message = self.message(name="Cars-Club",
+                               to=user.get('email'),
+                               **context
+                               )
 
-        try :
+        try:
             body = dumps(message)
         except Exception as e:
             raise e
-    
+
         self.channel.basic_publish(
             exchange='',
-            routing_key= self.queue,
+            routing_key=self.queue,
             body=body
         )
 
     def message(
-        self, 
+        self,
         name: str,
-        to: str, 
-        subject: str = 'Confirme o Email', 
+        to: str,
+        subject: str = 'Confirme o Email',
         ffrom: str = 'no-reply@cars-club.com',
-        **kwargs
-        ):
+            **kwargs):
 
         message = {
             'app': name,
