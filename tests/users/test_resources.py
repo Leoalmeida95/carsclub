@@ -24,3 +24,25 @@ def test_must_be_receive_object_json(client):
     response = client.post(uri, json={})
 
     assert isinstance(response.json, dict)
+
+
+def test_must_be_receive_object_json_empty_and_return_schema(client):
+    response = client.post(uri, json={})
+
+    assert response.json == {'errors': [],
+                             'message': 'Nenhum dado foi postado.',
+                             'resource': 'Users'
+                             }
+
+
+def test_must_be_receive_object_json_valid_and_return_ok(client):
+    response = client.post(uri, json={
+                                    "confirm_password": "123456",
+                                    "email": "leoasdas@gmail.com",
+                                    "full_name": "Leonardo Almeida da Silva",
+                                    "password": "123456"
+                                    })
+
+    assert response.json['message'] in ['Usuário criado(a).',
+                                        'Já existe um(a)' +
+                                        ' fornecedor com estes dados.']
