@@ -10,7 +10,7 @@ def test_must_be_invocable(client):
     assert hasattr(atr, '__call__'), 'o atributo deve ser invocável'
 
 
-def test_must_be_return_object_json(client):
+def test_must_be_return_status_code_valid(client):
 
     response = client.post(uri, json={})
 

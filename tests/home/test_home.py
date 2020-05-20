@@ -4,6 +4,7 @@
 import json
 from apps import api
 from flask_restful import Api
+from apps.utils.enums import EStatus_Code
 
 uri_base = '/'
 uri_api = '/api'
@@ -24,7 +25,7 @@ def test_initial_redirect_to_path_api(client):
 def test_index_response_200(client):
     response = client.get(uri_api)
 
-    assert response.status_code == 200
+    assert response.status_code == EStatus_Code.OK.value
 
 
 def test_home_response_hello(client):
@@ -41,13 +42,17 @@ def test_home_response_json_content_type(client):
     assert response.content_type == content_type
 
 
-def test_verify_if_api_instance_existes(client):
+def test_verify_if_api_instance_existes():
     result = getattr(api, 'api')
 
     assert isinstance(result, Api), 'deve ser Api do flask_restful'
 
 
-def test_verify_if_api_has_configure_atribute(client):
+def test_verify_if_api_has_configure_atribute():
+    assert hasattr(api, 'configure_api'), 'api deve ter um configure_api'
+
+
+def test_configure_api_must_be_invocable():
     atr = getattr(api, 'configure_api')
 
     assert hasattr(atr, '__call__'), 'o atributo deve ser invocável'
