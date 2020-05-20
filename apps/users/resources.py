@@ -52,10 +52,9 @@ class SignUp(Resource):
             errors = {'password': MSG_PASSWORD_WRONG}
             return resp_data_invalid('Users', errors)
 
-        print('schema load')
         # Desserialização os dados postados ou melhor meu payload
         data, errors = schema.load(req_data)
-        print('passou')
+
         # Se houver erros retorno uma resposta inválida
         if errors:
             return resp_data_invalid('Users', errors)

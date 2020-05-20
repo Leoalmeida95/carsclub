@@ -11,7 +11,6 @@ def test_must_be_invocable(client):
 
 
 def test_must_be_return_status_code_valid(client):
-
     response = client.post(uri, json={})
 
     assert response.status_code in [EStatus_Code.OK.value,
@@ -19,3 +18,9 @@ def test_must_be_return_status_code_valid(client):
                                     EStatus_Code.DATA_INVALID.value,
                                     EStatus_Code.BAD_REQUEST.value
                                     ]
+
+
+def test_must_be_receive_object_json(client):
+    response = client.post(uri, json={})
+
+    assert isinstance(response.json, dict)

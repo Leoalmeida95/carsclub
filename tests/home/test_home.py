@@ -55,4 +55,11 @@ def test_verify_if_api_has_configure_atribute():
 def test_configure_api_must_be_invocable():
     atr = getattr(api, 'configure_api')
 
-    assert hasattr(atr, '__call__'), 'o atributo deve ser invocável'
+    assert hasattr(atr, '__call__'), 'o configure_api deve ser invocável'
+
+
+def test_configure_api_must_be_have_argument():
+    atr = getattr(api, 'configure_api')
+
+    assert atr.__code__.co_argcount == 1, 'o configure_api\
+                                            deve ter um argumento'

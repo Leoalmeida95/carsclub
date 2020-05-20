@@ -2,7 +2,8 @@
 
 from mongoengine import (
     BooleanField,
-    StringField
+    StringField,
+    EmbeddedDocumentField
 )
 
 # Apps
@@ -49,6 +50,15 @@ class TestUser:
         Verifico se o campo email é do tipo string
         """
         assert isinstance(self.model._fields['email'], StringField)
+
+    def test_cars_field_exists(self):
+        assert 'cars' in self.model._fields
+
+    def test_cars_field_is_Car(self):
+        """
+        Verifico se o campo cars é do tipo Car
+        """
+        assert isinstance(self.model._fields['cars'], EmbeddedDocumentField)
 
     def test_active_field_exists(self):
         assert 'active' in self.model._fields
