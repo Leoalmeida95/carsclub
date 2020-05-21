@@ -1,22 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from marshmallow import Schema
-from marshmallow.fields import Email, Str, Boolean, Nested, Int, List
+from marshmallow.fields import Email, Str, Boolean, Nested, Int
 from apps.messages import MSG_FIELD_REQUIRED
-
-
-class FuelSchema(Schema):
-    Nome = Str()
-
-
-class CarSchema(Schema):
-    color = Str()
-    brand = Str()
-    model = Str()
-    value = Int()
-    mileage = Int()
-    number_ports = Int()
-    fuel = Nested(FuelSchema)
 
 
 class UserRegistrationSchema(Schema):
@@ -37,13 +23,25 @@ class UserSchema(Schema):
         'required': MSG_FIELD_REQUIRED})
     cpf_cnpj = Str()
     active = Boolean()
-    cars = List(Nested(CarSchema))
 
 
 class UserUpdateSchema(Schema):
     full_name = Str()
     email = Email()
     cpf_cnpj = Str()
-    cars = Nested(CarSchema)
     active = Boolean()
-    cars = List(Nested(CarSchema))
+
+
+class FuelSchema(Schema):
+    Nome = Str()
+
+
+class CarSchema(Schema):
+    color = Str()
+    brand = Str()
+    model = Str()
+    value = Int()
+    mileage = Int()
+    number_ports = Int()
+    fuel = Nested(FuelSchema)
+    user = Nested(UserSchema)

@@ -3,6 +3,13 @@ from apps.utils.enums import EStatus_Code
 
 uri = '/api/users'
 
+json_valido = {
+            "confirm_password": "123456",
+            "email": "leoasdas@gmail.com",
+            "full_name": "Leonardo Almeida da Silva",
+            "password": "123456"
+            }
+
 
 def test_must_be_invocable(client):
     atr = getattr(SignUp, 'post')
@@ -36,12 +43,7 @@ def test_must_be_receive_object_json_empty_and_return_schema(client):
 
 
 def test_must_be_receive_object_json_valid_and_return_ok(client):
-    response = client.post(uri, json={
-                                    "confirm_password": "123456",
-                                    "email": "leoasdas@gmail.com",
-                                    "full_name": "Leonardo Almeida da Silva",
-                                    "password": "123456"
-                                    })
+    response = client.post(uri, json=json_valido)
 
     assert response.json['message'] in ['Usuário criado(a).',
                                         'Já existe um(a)' +

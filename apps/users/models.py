@@ -9,30 +9,14 @@ from mongoengine import (
     EmailField,
     EmbeddedDocument,
     EmbeddedDocumentField,
-    StringField
+    StringField,
+    ReferenceField
 )
 
 # Apps
 from apps.db import db
 
 TYPES = ('Disel', 'Etanol', 'Gasolina', 'GNV')
-
-
-class Fuel(EmbeddedDocument):
-    Nome = StringField(max_length=8, choices=TYPES)
-
-
-class Car(EmbeddedDocument):
-    """
-    Default implementation for cars fields
-    """
-    color = StringField(default='')
-    brand = StringField(default='')
-    model = StringField(default='')
-    value = IntField(default=0)
-    mileage = IntField(default=0)
-    number_ports = IntField(default=2)
-    fuel = EmbeddedDocumentField(Fuel, default=Fuel)
 
 
 class Roles(EmbeddedDocument):
@@ -69,7 +53,23 @@ class User(UserMixin):
     Users are Buyers
     '''
     meta = {'collection': 'users'}
-
     full_name = StringField(required=True)
     cpf_cnpj = StringField(default='')
-    cars = EmbeddedDocumentField(Car, default=Car)
+
+
+class Fuel(EmbeddedDocument):
+    Nome = StringField(max_length=8, choices=TYPES)
+
+
+class Car(db.Document):
+    """
+    Default implementation for cars fields
+    """
+    color = StringField(default='')
+    brand = StringField(default='')
+    model = StringField(default='')
+    value = IntField(default=0)
+    mileage = IntField(default=0)
+    number_ports = IntField(default=2)
+    fuel = EmbeddedDocumentField(Fuel, default=Fuel)
+    user = ReferenceField(User, default=User, required=True)

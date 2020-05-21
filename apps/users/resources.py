@@ -6,8 +6,6 @@ from flask import request, current_app
 from flask_restful import Resource
 from bcrypt import gensalt, hashpw
 from mongoengine.errors import NotUniqueError, ValidationError
-# from datetime import datetime
-# from dateutil.relativedelta import relativedelta
 
 # Apps
 from apps.responses import (

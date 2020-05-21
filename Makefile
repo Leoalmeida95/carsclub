@@ -83,7 +83,7 @@ lint: clean
 	flake8
 
 test: lint
-	@pytest --verbose --cov=apps --color=yes tests/
+	@pytest --capture=no --cov=apps --color=yes tests/
 
 dev: test
 	python application.py
