@@ -15,3 +15,6 @@ mongoengine==0.15.0
 marshmallow==2.15.6
 bcrypt==3.1.4
 pika==1.1.0
+requests
+jaeger-client
+opentracing>=2,<3

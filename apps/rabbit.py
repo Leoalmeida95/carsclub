@@ -7,6 +7,11 @@ class RabbitMQ:
 
     @staticmethod
     def connect():
-        parameters = URLParameters(current_app.config.get('AMQP_URI'))
+        credentials = pika.PlainCredentials('guest', 'guest')
+        parameters = URLParameters('rabbitmq',
+                                   5672,
+                                   '/',
+                                   credentials
+                                    )
         parameters.connection_attempts = 7
         return BlockingConnection(parameters)

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import logging
 from flask import request
+from tracing import init_tracer
+from decorators import trace
 
 from flask_restful import Resource
 from mongoengine.errors import (
@@ -30,9 +33,12 @@ from .models import User
 from .schemas import UserSchema, UserUpdateSchema
 from .utils import get_user_by_id, exists_email_in_users
 
+tracer = init_tracer('users_page_list')
 
 class AdminUserPageList(Resource):
+    
 
+    @trace(tracer, 'get_users')
     def get(self, page_id=1):
         schema = UserSchema(many=True)
         page_size = 10
@@ -68,6 +74,7 @@ class AdminUserPageList(Resource):
 
 class AdminUserResource(Resource):
 
+    @trace(tracer, 'get_user')
     def get(self, user_id):
         result = None
         schema = UserSchema()
@@ -83,6 +90,7 @@ class AdminUserResource(Resource):
             'Users', MSG_RESOURCE_FETCHED.format('Usuários'),  data=result.data
         )
 
+    @trace(tracer, 'put_user')
     def put(self, user_id):
         result = None
         schema = UserSchema()
@@ -140,6 +148,7 @@ class AdminUserResource(Resource):
             'Users', MSG_RESOURCE_UPDATED.format('Usuário'),  data=result.data
         )
 
+    @trace(tracer, 'del_user')
     def delete(self, user_id):
             # Busco o usuário na coleção users pelo seu id
             user = get_user_by_id(user_id)
