@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-import logging
 from flask import request
 from tracing import init_tracer
 from decorators import trace
@@ -35,8 +33,8 @@ from .utils import get_user_by_id, exists_email_in_users
 
 tracer = init_tracer('users_page_list')
 
+
 class AdminUserPageList(Resource):
-    
 
     @trace(tracer, 'get_users')
     def get(self, page_id=1):

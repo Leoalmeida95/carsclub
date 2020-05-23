@@ -79,8 +79,6 @@ class TestUser:
 
     def test_model_user_function_is_admin(self):
         is_admin = getattr(self.user, 'is_admin')
-        import ipdb
-        ipdb.set_trace()
         assert hasattr(is_admin, '__call__'), 'o is_admin deve ser invocável'
 
     def test_model_user_all_fields_in_user(self):

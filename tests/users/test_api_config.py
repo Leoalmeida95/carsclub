@@ -22,7 +22,7 @@ def test_initial_redirect_to_path_api(client):
     assert uri_api in response.headers['Location']
 
 
-def test_index_response_200(client):
+def test_index_response_status_code_ok(client):
     response = client.get(uri_api)
 
     assert response.status_code == EStatus_Code.OK.value
