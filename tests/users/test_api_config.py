@@ -28,14 +28,14 @@ def test_index_response_status_code_ok(client):
     assert response.status_code == EStatus_Code.OK.value
 
 
-def test_home_response_hello(client):
+def test_index_response_hello(client):
     response = client.get(uri_api)
     data = json.loads(response.data.decode('utf-8'))
 
     assert data['site'] == 'Cars Club'
 
 
-def test_home_response_json_content_type(client):
+def test_index_response_json_content_type(client):
     content_type = "application/json"
     response = client.get(uri_api)
 
@@ -62,4 +62,4 @@ def test_configure_api_must_be_have_argument():
     atr = getattr(api, 'configure_api')
 
     assert atr.__code__.co_argcount == 1, 'o configure_api\
-                                            deve ter um argumento'
+                                            deve receber um parametro'

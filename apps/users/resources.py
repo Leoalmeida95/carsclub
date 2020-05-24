@@ -70,7 +70,7 @@ class SignUp(Resource):
             model.save()
 
         except NotUniqueError:
-            return resp_already_exists('Users', 'fornecedor')
+            return resp_already_exists('Users', 'usuário')
 
         except ValidationError as e:
             return resp_exception('Users', msg=MSG_INVALID_DATA, description=e)
