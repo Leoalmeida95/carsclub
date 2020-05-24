@@ -5,21 +5,28 @@ from flask import request, current_app
 # Third
 from flask_restful import Resource
 from bcrypt import gensalt, hashpw
-from mongoengine.errors import NotUniqueError, ValidationError
+from mongoengine.errors import (
+                                NotUniqueError,
+                                ValidationError,
+                                DoesNotExist,
+                                FieldDoesNotExist
+                                )
 
 # Apps
 from apps.responses import (
     resp_already_exists,
     resp_exception,
     resp_data_invalid,
-    resp_ok
+    resp_ok,
+    resp_does_not_exist
 )
 from apps.messages import (
                             MSG_NO_DATA,
                             MSG_PASSWORD_WRONG,
                             MSG_INVALID_DATA,
                             MSG_RESOURCE_ACTIVE,
-                            MSG_RESOURCE_CREATED
+                            MSG_RESOURCE_CREATED,
+                            MSG_EXCEPTION
                         )
 from apps.services import signup
 
@@ -75,9 +82,6 @@ class SignUp(Resource):
         except ValidationError as e:
             return resp_exception('Users', msg=MSG_INVALID_DATA, description=e)
 
-        except Exception as e:
-            return resp_exception('Users', description=e)
-
         # Realizo um dump dos dados de acordo com o modelo salvo
         schema = UserSchema()
         result = schema.dump(model)
@@ -95,7 +99,7 @@ class SignUp(Resource):
                 producer.publish(result.data)
 
             except Exception as e:
-                raise
+                return resp_exception('Users', description=MSG_EXCEPTION)
 
         # Retorno 200 o meu endpoint
         return resp_ok(
@@ -106,26 +110,31 @@ class SignUp(Resource):
 class Activate(Resource):
     def patch(self, user_id):
 
-        user = get_user_by_id(user_id)
+        data = user_id or None
 
-        if not isinstance(user, User):
-            return user
+        if data is None or data is ' ':
+            return resp_data_invalid('Users', [], msg=MSG_NO_DATA)
 
         try:
+            user = get_user_by_id(user_id)
+
             user.active = True
             user.save()
+
+        except DoesNotExist as e:
+            return resp_does_not_exist('Users', 'Usuário')
+
+        except FieldDoesNotExist as e:
+            return resp_exception('Users', description=e.__str__())
 
         except NotUniqueError:
             return resp_already_exists('Users', 'usuário')
 
         except ValidationError as e:
-            return resp_exception(
-                                    'Users',
-                                    msg=MSG_INVALID_DATA,
-                                    description=e.__str__())
-
-        except Exception as e:
-            return resp_exception('Users', description=e.__str__())
+            return resp_exception('Users',
+                                  msg=MSG_INVALID_DATA,
+                                  description=e.__str__()
+                                  )
 
         return resp_ok('Users', MSG_RESOURCE_ACTIVE.format('Usuário'))
 

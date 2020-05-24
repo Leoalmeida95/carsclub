@@ -6,10 +6,6 @@ from mongoengine.errors import (
                                 MultipleObjectsReturned
                             )
 from .models import User
-from apps.responses import (
-    resp_does_not_exist,
-    resp_exception
-)
 
 
 def check_password_in_signup(password, confirm_password):
@@ -31,13 +27,13 @@ def get_user_by_id(user_id: str):
         return User.objects.get(id=user_id)
 
     except DoesNotExist as e:
-        return resp_does_not_exist('Users', 'Usuário')
+        raise e
 
     except FieldDoesNotExist as e:
-        return resp_exception('Users', description=e.__str__())
+        raise e
 
     except Exception as e:
-        return resp_exception('Users', description=e.__str__())
+        raise e
 
 
 def exists_email_in_users(email: str, instance=None):
