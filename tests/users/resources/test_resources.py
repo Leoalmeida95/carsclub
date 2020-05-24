@@ -38,13 +38,29 @@ def test_signup_post_must_be_invocable(client):
 
 
 def test_post_json_empty_must_return_message_no_data(client):
+    """
+        Verifica o status code 422 e a menssagem
+    """
     response = client.post(endpoint)
+    assert response.status_code == EStatus_Code.DATA_INVALID.value
     assert response.json['message'] == MSG_NO_DATA
 
 
 def test_post_return_must_receive_object_json(client):
     response = client.post(endpoint)
     assert isinstance(response.json, dict)
+
+
+def test_post_json_empty_must_return_status_code_422(client):
+    """
+        Verifica o status code 422 e a menssagem
+    """
+    response = client.post(endpoint,
+                           data=dumps(dict('')),
+                           content_type='application/json'
+                           )
+    assert response.status_code == EStatus_Code.DATA_INVALID.value
+    assert response.json['message'] == MSG_NO_DATA
 
 
 def test_post_return_must_receive_object_json_empty_and_return_schema(client):
@@ -55,28 +71,22 @@ def test_post_return_must_receive_object_json_empty_and_return_schema(client):
                              }
 
 
-def test_post_json_empty_must_return_status_code_422(client):
-    response = client.post(endpoint, data=dumps(dict('')), content_type='application/json')
-    assert response.status_code == EStatus_Code.DATA_INVALID.value
-
-
-def test_post_json_data_invalid_must_return_message_invalid_data(client):
+def test_post_json_one_arg_must_return_status_code_422(client):
+    """
+        Verifica o status code 422 e a menssagem
+    """
     response = client.post(endpoint,
                            data=dumps(dict(create_user(email=email))),
                            content_type='application/json'
                            )
+    assert response.status_code == EStatus_Code.DATA_INVALID.value
     assert response.json['message'] == MSG_INVALID_DATA
 
 
-def test_post_json_one_arg_must_return_status_code_422(client):
-    response = client.post(endpoint,
-                           data=dumps(dict(create_user(email=email))),
-                           content_type='application/json'
-                           )
-    assert response.status_code == EStatus_Code.DATA_INVALID.value
-
-
 def test_post_json_two_arg_must_return_status_code_422(client):
+    """
+        Verifica o status code 422 e a menssagem
+    """
     response = client.post(endpoint,
                            data=dumps(dict(
                                             create_user(
@@ -88,9 +98,13 @@ def test_post_json_two_arg_must_return_status_code_422(client):
                            content_type='application/json'
                            )
     assert response.status_code == EStatus_Code.DATA_INVALID.value
+    assert response.json['message'] == MSG_INVALID_DATA
 
 
 def test_post_json_tree_arg_must_return_status_code_422(client):
+    """
+        Verifica o status code 422 e a menssagem
+    """
     response = client.post(endpoint,
                            data=dumps(dict(
                                             create_user(
@@ -103,6 +117,24 @@ def test_post_json_tree_arg_must_return_status_code_422(client):
                            content_type='application/json'
                            )
     assert response.status_code == EStatus_Code.DATA_INVALID.value
+    assert response.json['message'] == MSG_INVALID_DATA
+
+
+def test_post_already_exists_must_return_bad_request(client):
+    """
+        Verifica o status code 400 e a menssagem
+    """
+    client.post(endpoint,
+                data=dumps(dict(return_json_valid())),
+                content_type='application/json'
+                )
+    resp2 = client.post(endpoint,
+                        data=dumps(dict(return_json_valid())),
+                        content_type='application/json'
+                        )
+
+    assert resp2.status_code == EStatus_Code.BAD_REQUEST.value
+    assert resp2.json['message'] == MSG_ALREADY_EXISTS.format('usuário')
 
 
 # def test_post_json_valid_must_return_status_code_200(client):
@@ -114,28 +146,3 @@ def test_post_json_tree_arg_must_return_status_code_422(client):
 #     response = client.post(endpoint, json=return_json_valid())
 
 #     assert response.json['message'] == MSG_RESOURCE_CREATED.format('usuário')
-
-
-def test_post_already_exists_must_return_status_code_400(client):
-    client.post(endpoint,
-                data=dumps(dict(return_json_valid())),
-                content_type='application/json'
-                )
-    resp2 = client.post(endpoint,
-                        data=dumps(dict(return_json_valid())),
-                        content_type='application/json'
-                        )
-
-    assert resp2.status_code == EStatus_Code.BAD_REQUEST.value
-
-
-def test_post_already_exists_must_return_message_warning(client):
-    client.post(endpoint,
-                data=dumps(dict(return_json_valid())),
-                content_type='application/json'
-                )
-    resp2 = client.post(endpoint,
-                        data=dumps(dict(return_json_valid())),
-                        content_type='application/json'
-                        )
-    assert resp2.json['message'] == MSG_ALREADY_EXISTS.format('usuário')
