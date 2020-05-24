@@ -26,6 +26,7 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    TESTING = True
     FLASK_ENV = 'testing'
     TESTING = True
     MONGODB_HOST = getenv('MONGODB_URI_TEST')
